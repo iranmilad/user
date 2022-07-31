@@ -16,11 +16,7 @@ class AdminController extends Controller
 	use Paginate;
 	public function index(Request $request)
 	{
-        Artisan::call('cache:clear');
-        Artisan::call('route:clear');
-        Artisan::call('config:clear');
-        Artisan::call('view:clear');
-        return "Cache is cleared";
+
 		if($request->wantsJson())
 		{
             $query = Admin::query();
