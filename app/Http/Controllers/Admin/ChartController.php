@@ -57,7 +57,7 @@ class ChartController extends Controller
 			return redirect()->route("charts.index");
 		}catch(\Exception $ex){
 			DB::rollBack();
-			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات.".$ex]);
+			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات."]);
 		}
 
 	}
