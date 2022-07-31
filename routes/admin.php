@@ -11,7 +11,7 @@ Route::group(["middleware" => ['auth:web']], function () {
 
     Route::get("logout", [\App\Http\Controllers\Admin\AuthController::class, "logout"])->name("logout");
     Route::get("/", [\App\Http\Controllers\Admin\HomeController::class, "index"])->name("home");
-    
+
     Route::get("users/search",[\App\Http\Controllers\Admin\UserController::class,"search"]);
     Route::resource("users",\App\Http\Controllers\Admin\UserController::class);
     Route::put("user/{id}/change-active",[\App\Http\Controllers\Admin\UserController::class,"changeActive"]);
@@ -50,4 +50,6 @@ Route::group(["middleware" => ['auth:web']], function () {
     Route::put("updateProfile", [\App\Http\Controllers\Admin\AdminController::class, "updateProfile"])->name("admin.updateProfile");
     Route::put("updatePassword", [\App\Http\Controllers\Admin\AdminController::class, "updatePassword"])->name("admin.updatePassword");
     Route::put("admin/{id}/change-active",[\App\Http\Controllers\Admin\AdminController::class,"changeActive"]);
+
+    Route::get("clear", [\App\Http\Controllers\Admin\AdminController::class, "clear"])->name("clear");
 });

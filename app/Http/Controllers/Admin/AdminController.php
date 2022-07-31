@@ -140,7 +140,7 @@ class AdminController extends Controller
 
         return redirect()->route('home');
     }
-	
+
 	public function changeActive($id){
 		$admin = Admin::query()->findOrFail($id);
 		$admin->active=!$admin->active;
@@ -152,6 +152,13 @@ class AdminController extends Controller
 		}
 		return redirect()->route("admins.index");
 	}
-
+    public function clear()
+    {
+        Artisan::call('cache:clear');
+        Artisan::call('route:clear');
+        Artisan::call('config:clear');
+        Artisan::call('view:clear');
+        return "Cache is cleared";
+    }
 
 }
