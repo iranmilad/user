@@ -47,7 +47,7 @@ class ChartController extends Controller
 			$chart=Chart::query()->create($request->all());
 
 			$this->createSubscribe($request , $chart);
-	   
+
 			DB::commit();
 
 			if(request()->wantsJson())
@@ -57,14 +57,14 @@ class ChartController extends Controller
 			return redirect()->route("charts.index");
 		}catch(\Exception $ex){
 			DB::rollBack();
-			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات."]);
+			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات.".$ex]);
 		}
-		
+
 	}
 
 	private function createSubscribe($request , $chart){
 		$subscribes=$request->input('subscribes');
-	
+
 		if($subscribes && is_array($subscribes)){
 			foreach($subscribes as $subscribe){
 				SubscribeAccessibility::create([
@@ -93,7 +93,7 @@ class ChartController extends Controller
 		if(!auth()->user()->supper_admin){
 			throw ValidationException::withMessages(["error"=>"مجاز به ویرایش نمی باشید"]);
 		}
-		
+
 		try{
 			DB::beginTransaction();
 
@@ -111,14 +111,14 @@ class ChartController extends Controller
 				return response()->json();
 			}
 			return redirect()->route("charts.index");
-			
-		
+
+
 		}catch(\Exception $ex){
 			DB::rollBack();
 			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات."]);
 		}
-		
-		
+
+
 	}
 
 	public function destroy($id)
