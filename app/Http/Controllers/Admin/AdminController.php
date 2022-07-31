@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use App\Traits\Paginate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Artisan;
 class AdminController extends Controller
 {
 	use Paginate;
