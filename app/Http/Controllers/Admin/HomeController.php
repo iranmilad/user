@@ -6,6 +6,7 @@ use App\Constants\PaymentStates;
 use App\Models\Payment;
 use App\Traits\Paginate;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -13,10 +14,13 @@ class HomeController extends Controller
 
     public function index()
     {
-        $now = jdate();
-        $currentYear = $now->getYear();
-        $currentMonth = $now->getMonth();
+        // $now = jdate();
+        // $currentYear = $now->getYear();
+        // $currentMonth = $now->getMonth();
 
+        $now =  Carbon::now();
+        $currentYear = $now->year;
+        $currentMonth = $now->month();
         $query = Payment::query()->where("state", PaymentStates::SUCCESS);
 
         $sumAll = (clone $query)->sum('amount');
