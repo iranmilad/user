@@ -36,6 +36,7 @@ class HomeController extends Controller
             ["title"=>"اشتراک شش ماهه","price"=>"180000","price_monthly"=>"30000","price_discount"=>"150000","time"=>"180","payment_link"=>"https://payment.tseshow.com/123"],
             ["title"=>"اشتراک یک ساله","price"=>"360000","price_monthly"=>"30000","price_discount"=>"300000","time"=>"365","payment_link"=>"https://payment.tseshow.com/123"],
         ];
+
 		$data->profile=auth()->check() ? new UserResource(auth()->user()) : null;
 
 			// if(request()->wantsJson()){
