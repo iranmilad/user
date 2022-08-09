@@ -30,6 +30,7 @@ class HomeController extends Controller
             "اشتراک 90 روزه 210 هزار تومان",
             "اشتراک 365 روزه 800 هزار تومان",
         ];
+
         $data->plans=[
             ["title"=>"اشتراک یک ماهه","price"=>"30000","price_monthly"=>"30000","price_discount"=>"","time"=>"30","payment_link"=>"https://payment.tseshow.com/123"],
             ["title"=>"اشتراک سه ماهه","price"=>"90000","price_monthly"=>"30000","price_discount"=>"80000","time"=>"90","payment_link"=>"https://payment.tseshow.com/123"],
