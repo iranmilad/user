@@ -38,10 +38,39 @@ class UserMemberListController extends Controller
 			"member_list_id"=>$memberListId,
 			"user_id"=>auth()->id(),
 		]);
-	
+
 		if(request()->wantsJson())
 		{
 			return $this->responseJson("با موفقیت عضو ممبر لیست شدید.",null,201);
 		}
 	}
+
+	public function delete(Request $request)
+	{
+		$memberListId=$request->input("member_list_id");
+		$memberList=MemberList::query()->findOrFail($memberListId);
+
+		if(!auth()->user()->has_subscribe && $memberList->special_users){
+			throw ValidationException::withMessages(["error"=>"فقط کاربران ویژه مجاز به انجام عملیات می باشند."]);
+		}
+
+		$userMemberList=UserMemberList::query()->where([['user_id',auth()->id()],['member_list_id',$memberListId]])->first();
+		if($userMemberList){
+            UserMemberList::query()->delete([
+                "member_list_id"=>$memberListId,
+                "user_id"=>auth()->id(),
+            ]);
+        }
+        else{
+            throw ValidationException::withMessages(["error"=>"شما در این ممبر لیست عضو نیستید."]);
+        }
+
+
+
+		if(request()->wantsJson())
+		{
+			return $this->responseJson("با موفقیت عضو ممبر لیست خارج شدید.",null,201);
+		}
+	}
+
 }

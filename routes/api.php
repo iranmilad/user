@@ -26,21 +26,22 @@ Route::controller(AuthController::class)->group(function(){
 
 
 Route::group(["prefix"=>"user"],function(){
-    Route::controller(UserController::class)->group(function(){    
+    Route::controller(UserController::class)->group(function(){
         Route::post('/register', 'register');
         Route::post('/confirm-register', 'confirmRegister');
         Route::group(["middleware"=>"auth:api"],function(){
             Route::put('/edit', 'edit');
             Route::put('/change-password', 'changePassword');
-            Route::put('/change-password', 'changePassword');           
+            Route::put('/change-password', 'changePassword');
         });
     });
 
     Route::group(["middleware"=>"auth:api"],function(){
-        Route::controller(UserMemberListController::class)->group(function(){  
+        Route::controller(UserMemberListController::class)->group(function(){
             Route::group(["prefix"=>"member-lists"],function(){
-                Route::get('/', 'index'); 
-                Route::post('/create', 'create'); 
+                Route::get('/', 'index');
+                Route::post('/create', 'create');
+                Route::post('/delete', 'delete');
             });
         });
 
@@ -48,22 +49,22 @@ Route::group(["prefix"=>"user"],function(){
     });
 });
 
-Route::get('/faqs', [FaqController::class,'index']);   
+Route::get('/faqs', [FaqController::class,'index']);
 
 Route::group(["middleware"=>"auth:api"],function(){
-    Route::get('/request-pay', [PaymentGatewayController::class,'requestPay']);   
+    Route::get('/request-pay', [PaymentGatewayController::class,'requestPay']);
 
-    Route::post('/question', [UserQuestionController::class,'store']);   
-    Route::post('/notifications/push', [NotificationController::class,'push']);   
+    Route::post('/question', [UserQuestionController::class,'store']);
+    Route::post('/notifications/push', [NotificationController::class,'push']);
 
-    Route::controller(UserNotificationController::class)->group(function(){    
+    Route::controller(UserNotificationController::class)->group(function(){
         Route::group(["prefix"=>"notifications"],function(){
-            Route::get('/', 'index'); 
-            Route::put('/seen/{id}', 'seen'); 
-        });  
+            Route::get('/', 'index');
+            Route::put('/seen/{id}', 'seen');
+        });
     });
 
-    Route::get('/member-lists', [MemberListController::class, 'index']); 
+    Route::get('/member-lists', [MemberListController::class, 'index']);
 
 });
 
