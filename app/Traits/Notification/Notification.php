@@ -24,7 +24,7 @@ trait Notification {
 			if($type==NotificationTypes::PRIVATE)
 				$userIds=$request->input("user_id");
 			else if($type==NotificationTypes::SPESIALS)
-					$userIds=User::query()->whereHas('subscribe')->pluck('id');			
+					$userIds=User::query()->whereHas('subscribe')->pluck('id');
 			else if($type==NotificationTypes::NON_SPESIALS)
 				$userIds=User::query()->whereDoesntHave('subscribe')->pluck('id');
 			else if($type==NotificationTypes::MEMBER_LIST)
@@ -40,8 +40,9 @@ trait Notification {
 			DB::commit();
 		}
 		}catch(\Exception $ex){
+            Log::warning($ex);
 			DB::rollBack();
 		}
-		
+
     }
 }
