@@ -163,7 +163,7 @@ class AdminController extends Controller
     }
 
     public function migrate(){
-        Artisan::call('queue:table');
+        Artisan::call('queue:failed-table');
         Artisan::call('migrate');
         return "Migrate queue table";
 
