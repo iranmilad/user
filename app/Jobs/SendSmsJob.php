@@ -36,7 +36,7 @@ class SendSmsJob implements ShouldQueue
     {
         try{
             $url = "https://ippanel.com/services.jspd";
-		
+            $url = "http://ippanel.com/class/sms/webservice/send_url.php";
             $rcpt_nm = is_array($this->mobile) ? $this->mobile : explode( "," , $this->mobile );
             $param = array
                         (
@@ -47,19 +47,19 @@ class SendSmsJob implements ShouldQueue
                             'to'=>json_encode($rcpt_nm),
                             'op'=>'send'
                         );
-                        
-            $handler = curl_init($url);             
-            curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($handler, CURLOPT_POSTFIELDS, $param);                       
+
+            $handler = curl_init($url);
+            curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "GET");
+            curl_setopt($handler, CURLOPT_POSTFIELDS, $param);
             curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
             $res = curl_exec($handler);
-            
+
             // $response2 = json_decode($response2);
             // $res_code = $response2[0];
             // $res_data = $response2[1];
-            
+
             curl_close($handler);
-    
+
         }catch (\Exception $ex){
 
         }
