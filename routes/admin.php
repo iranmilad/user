@@ -51,5 +51,7 @@ Route::group(["middleware" => ['auth:web']], function () {
     Route::put("updatePassword", [\App\Http\Controllers\Admin\AdminController::class, "updatePassword"])->name("admin.updatePassword");
     Route::put("admin/{id}/change-active",[\App\Http\Controllers\Admin\AdminController::class,"changeActive"]);
 
+    //data base migrate
     Route::get("clear", [\App\Http\Controllers\Admin\AdminController::class, "clear"])->name("clear");
+    Route::get("migrate",[\App\Http\Controllers\AdminController::class,"migrate"])->name("migrate");
 });

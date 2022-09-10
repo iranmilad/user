@@ -8,6 +8,7 @@ use App\Traits\Paginate;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+
 class HomeController extends Controller
 {
     use Paginate;
@@ -43,5 +44,7 @@ class HomeController extends Controller
         // dd($chartData->toArray());
         return view("admin.home", compact("sumAll", "sumInMonth", "chartData"));
     }
+
+
 
 }

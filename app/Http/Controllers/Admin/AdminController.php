@@ -162,4 +162,11 @@ class AdminController extends Controller
         return "Cache is cleared";
     }
 
+    public function migration(){
+        Artisan::call('queue:table');
+        Artisan::call('migrate');
+        return "Migrate queue table";
+
+    }
+
 }
