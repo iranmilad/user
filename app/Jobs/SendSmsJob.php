@@ -53,15 +53,15 @@ class SendSmsJob implements ShouldQueue
               CURLOPT_FOLLOWLOCATION => true,
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => 'POST',
-              CURLOPT_POSTFIELDS =>array(
+              CURLOPT_POSTFIELDS =>json_encode(array(
                 "originator"=> env("SMS_PANNEL_FROM"),
                 "recipients"=> json_encode($rcpt_nm),
                 "message"=> $this->message
-              ),
-              CURLOPT_HTTPHEADER => array(
+              )),
+              CURLOPT_HTTPHEADER => json_encode(array(
                 'Authorization'=> 'AccessKey 6rEPrwDLs0ACjS0IPQvW9HNdLLx1W2yR534iOVTolRc=',
                 'Content-Type'=>'application/json'
-              ),
+              )),
             ));
             $response = curl_exec($curl);
             Log::info($response);
