@@ -59,7 +59,7 @@ class SendSmsJob implements ShouldQueue
                 "message"=> $this->message
               ),
               CURLOPT_HTTPHEADER => array(
-                'Authorization'=> env("SMS_PANNEL_Token"),
+                'Authorization'=> 'AccessKey 6rEPrwDLs0ACjS0IPQvW9HNdLLx1W2yR534iOVTolRc=',
                 'Content-Type'=>'application/json'
               ),
             ));
