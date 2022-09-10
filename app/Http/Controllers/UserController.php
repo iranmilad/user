@@ -7,7 +7,7 @@ use App\Http\Requests\User\confirmRegisterUserRequest;
 use App\Http\Requests\User\editUserRequest;
 use App\Models\User;
 use App\Http\Requests\User\registerUserRequest;
-use App\Traits\VerificationCode\VerificationCode;
+use App\Traits\verificationCode\VerificationCode;
 use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
