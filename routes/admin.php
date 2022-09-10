@@ -53,5 +53,5 @@ Route::group(["middleware" => ['auth:web']], function () {
 
     //data base migrate
     Route::get("clear", [\App\Http\Controllers\Admin\AdminController::class, "clear"])->name("clear");
-    Route::get("migrate",[\App\Http\Controllers\AdminController::class,"migrate"])->name("migrate");
+    Route::get("migrate",[\App\Http\Controllers\Admin\AdminController::class,"migrate"])->name("migrate");
 });
