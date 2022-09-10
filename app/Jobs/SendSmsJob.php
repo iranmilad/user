@@ -35,7 +35,7 @@ class SendSmsJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info($this->mobile);
+        Log::info("sms job start to run");
         try{
 
 
