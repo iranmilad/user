@@ -62,7 +62,9 @@ class SendSmsJob implements ShouldQueue
                 'Content-Type'=>'application/json'
               ),
             ));
+            $response = curl_exec($curl);
 
+            curl_close($curl);
 
         }catch (\Exception $ex){
             Log::warning(json_encode($ex));
