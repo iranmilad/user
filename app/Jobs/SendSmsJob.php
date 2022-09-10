@@ -58,10 +58,11 @@ class SendSmsJob implements ShouldQueue
                 "recipients"=> json_encode($rcpt_nm),
                 "message"=> $this->message
               )),
-              CURLOPT_HTTPHEADER => json_encode(array(
-                'Authorization'=> 'AccessKey 6rEPrwDLs0ACjS0IPQvW9HNdLLx1W2yR534iOVTolRc=',
-                'Content-Type'=>'application/json'
-              )),
+              CURLOPT_HTTPHEADER =>  array(
+                'Authorization: AccessKey 6rEPrwDLs0ACjS0IPQvW9HNdLLx1W2yR534iOVTolRc=',
+                'Content-Type: application/json'
+              ),
+
             ));
             $response = curl_exec($curl);
             Log::info($response);
