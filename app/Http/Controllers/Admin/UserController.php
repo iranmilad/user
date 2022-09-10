@@ -57,7 +57,7 @@ class UserController extends Controller
         User::where(['id'=>$id,])->delete();
 		#$user->delete();
 
-		return redirect()->route("users.index");
+		return view("admin.users.index");
 	}
 
 	public function show($id)
