@@ -155,9 +155,9 @@ class AdminController extends Controller
 	}
     public function clear()
     {
+        Artisan::call('config:clear');
         Artisan::call('cache:clear');
         Artisan::call('route:clear');
-        Artisan::call('config:clear');
         Artisan::call('view:clear');
         return "Cache is cleared";
     }
