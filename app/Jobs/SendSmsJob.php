@@ -54,11 +54,11 @@ class SendSmsJob implements ShouldQueue
               CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
               CURLOPT_CUSTOMREQUEST => 'POST',
               CURLOPT_POSTFIELDS =>'{
-                "originator": '.env("SMS_PANNEL_FROM").',
+                "originator": "'.env("SMS_PANNEL_FROM").'",
                 "recipients": [
                     "09193753006"
                 ],
-                "message": '.$this->message.'
+                "message": "'.$this->message.'"
               }',
               CURLOPT_HTTPHEADER =>array(
                 'Authorization: AccessKey 6rEPrwDLs0ACjS0IPQvW9HNdLLx1W2yR534iOVTolRc=',
