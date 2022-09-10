@@ -35,30 +35,33 @@ class SendSmsJob implements ShouldQueue
     public function handle()
     {
         try{
-            $url = "https://ippanel.com/services.jspd";
+
             $url = "http://ippanel.com/class/sms/webservice/send_url.php";
             $rcpt_nm = is_array($this->mobile) ? $this->mobile : explode( "," , $this->mobile );
-            $param = array
-                        (
-                            'uname'=>env("SMS_PANNEL_UNAME"),
-                            'pass'=>env("SMS_PANNEL_PASS"),
-                            'from'=>env("SMS_PANNEL_FROM"),
-                            'message'=>$this->message,
-                            'to'=>json_encode($rcpt_nm),
-                            'op'=>'send'
-                        );
 
-            $handler = curl_init($url);
-            curl_setopt($handler, CURLOPT_CUSTOMREQUEST, "GET");
-            curl_setopt($handler, CURLOPT_POSTFIELDS, $param);
-            curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
-            $res = curl_exec($handler);
 
-            // $response2 = json_decode($response2);
-            // $res_code = $response2[0];
-            // $res_data = $response2[1];
+            $curl = curl_init();
 
-            curl_close($handler);
+            curl_setopt_array($curl, array(
+              CURLOPT_URL => 'http://rest.ippanel.com/v1/messages',
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => '',
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 0,
+              CURLOPT_FOLLOWLOCATION => true,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => 'POST',
+              CURLOPT_POSTFIELDS =>array(
+                "originator"=> env("SMS_PANNEL_FROM"),
+                "recipients"=> json_encode($rcpt_nm),
+                "message"=> $this->message
+              ),
+              CURLOPT_HTTPHEADER => array(
+                'Authorization'=> env("SMS_PANNEL_Token"),
+                'Content-Type'=>'application/json'
+              ),
+            ));
+
 
         }catch (\Exception $ex){
 
