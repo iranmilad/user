@@ -5,6 +5,7 @@ namespace App\Traits\VerificationCode;
 use App\Jobs\SendSmsJob;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
 
 trait VerificationCode
 {
@@ -25,6 +26,7 @@ trait VerificationCode
             ]);
             //if (env('APP_DEBUG') != "true")
                 SendSmsJob::dispatch($mobile, "کد تایید : $code");
+                Log::info("send sms to queue");
         }
         return $vCode;
     }
