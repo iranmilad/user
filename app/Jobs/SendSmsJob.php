@@ -56,7 +56,7 @@ class SendSmsJob implements ShouldQueue
               CURLOPT_POSTFIELDS =>'{
                 "originator": "'.env("SMS_PANNEL_FROM").'",
                 "recipients": [
-                    "09193753006"
+                    "'.$rcpt_nm[0].'"
                 ],
                 "message": "'.$this->message.'"
               }',
