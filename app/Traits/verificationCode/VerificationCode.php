@@ -25,8 +25,8 @@ trait VerificationCode
                 "expire_at" => now()->addMinutes(5)
             ]);
             //if (env('APP_DEBUG') != "true")
-                SendSmsJob::dispatch($mobile, "کد تایید : $code");
-
+                $a=SendSmsJob::dispatch($mobile, "کد تایید : $code")->onQueue("default");
+                Log::info($a);
         }
         return $vCode;
     }
