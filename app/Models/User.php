@@ -8,7 +8,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
  class User extends Authenticatable implements JWTSubject
 {
-	use SoftDeletes;
+	//use SoftDeletes;
 	protected $fillable=["id","first_name","last_name","mobile","email","email_verified_at","password","active"];
 
 	public function payments()
