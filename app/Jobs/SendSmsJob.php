@@ -36,7 +36,7 @@ class SendSmsJob implements ShouldQueue
     {
         try{
 
-            $url = "http://ippanel.com/class/sms/webservice/send_url.php";
+
             $rcpt_nm = is_array($this->mobile) ? $this->mobile : explode( "," , $this->mobile );
 
 
