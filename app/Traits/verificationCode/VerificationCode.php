@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Traits\VerificationCode;
 
 
@@ -23,7 +23,7 @@ trait VerificationCode
                 "info" => json_encode($request->only(['first_name','last_name','password'])),
                 "expire_at" => now()->addMinutes(5)
             ]);
-            if (env('APP_DEBUG') != "true")
+            //if (env('APP_DEBUG') != "true")
                 SendSmsJob::dispatch($mobile, "کد تایید : $code");
         }
         return $vCode;
