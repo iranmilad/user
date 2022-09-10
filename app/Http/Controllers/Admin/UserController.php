@@ -32,14 +32,14 @@ class UserController extends Controller
 	public function store(storeUserRequest $request)
 	{
 		User::query()->create($request->all());
-		
+
 		return redirect()->route("users.index");
 	}
 
 	public function edit($id)
 	{
 		$user = User::query()->findOrFail($id);
-	
+
 		return view("admin.users.edit",compact('user'));
 	}
 
@@ -47,22 +47,23 @@ class UserController extends Controller
 	{
 		$user = User::query()->findOrFail($id);
 		$user->update($request->all());
-		
+
 		return redirect()->route("users.index");
 	}
 
 	public function destroy($id)
 	{
 		$user = User::query()->findOrFail($id);
-		$user->delete();
-		
+        User::where(['id'=>$id,])->delete();
+		#$user->delete();
+
 		return redirect()->route("users.index");
 	}
 
 	public function show($id)
 	{
 		$user = User::query()->findOrFail($id);
-		
+
 		return view("admin.users.info",compact('user'));
 	}
 
@@ -77,7 +78,7 @@ class UserController extends Controller
 		}
 		return redirect()->route("users.index");
 	}
-	
+
 	public function search(Request $request){
 		$key=$request->input("q");
 
@@ -85,7 +86,7 @@ class UserController extends Controller
 				$query->where('mobile','like','%'.$key.'%')
 				->orWhere(DB::raw('concat(first_name," ",last_name)'),'like','%'.$key.'%');
 		})->get(['id','first_name','last_name','mobile']);
-	
+
 		if(request()->wantsJson())
 		{
 			return response()->json($users);
