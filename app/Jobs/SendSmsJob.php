@@ -8,6 +8,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SendSmsJob implements ShouldQueue
 {
@@ -64,7 +65,7 @@ class SendSmsJob implements ShouldQueue
 
 
         }catch (\Exception $ex){
-
+            Log::warning(json_encode($ex));
         }
 
     }
