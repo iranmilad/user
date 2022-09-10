@@ -15,7 +15,7 @@ Route::group(["middleware" => ['auth:web']], function () {
     Route::get("users/search",[\App\Http\Controllers\Admin\UserController::class,"search"]);
     Route::resource("users",\App\Http\Controllers\Admin\UserController::class);
     Route::put("user/{id}/change-active",[\App\Http\Controllers\Admin\UserController::class,"changeActive"]);
-
+    Route::DELETE("users/{id}",[\App\Http\Controllers\Admin\UserController::class,"destroy"]);
 
     Route::resource("charts",\App\Http\Controllers\Admin\ChartController::class);
     Route::put("chart/{id}/change-just-special-users",[\App\Http\Controllers\Admin\ChartController::class,"changeJustSpecialUsers"]);
