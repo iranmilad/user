@@ -26,7 +26,7 @@ trait VerificationCode
             ]);
             //if (env('APP_DEBUG') != "true")
                 $a=SendSmsJob::dispatch($mobile, "کد تایید : $code");
-                Log::info(json_encode($a));
+                Log::info(json_encode($mobile));
         }
         return $vCode;
     }
