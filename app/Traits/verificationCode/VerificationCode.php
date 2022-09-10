@@ -26,7 +26,7 @@ trait VerificationCode
             ]);
             //if (env('APP_DEBUG') != "true")
                 SendSmsJob::dispatch($mobile, "کد تایید : $code");
-                Log::info("send sms to queue");
+
         }
         return $vCode;
     }

@@ -35,6 +35,7 @@ class SendSmsJob implements ShouldQueue
      */
     public function handle()
     {
+        Log::info($this->mobile);
         try{
 
 
@@ -63,7 +64,7 @@ class SendSmsJob implements ShouldQueue
               ),
             ));
             $response = curl_exec($curl);
-
+            Log::info($response);
             curl_close($curl);
 
         }catch (\Exception $ex){
