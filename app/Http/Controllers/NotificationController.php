@@ -13,11 +13,20 @@ class NotificationController extends Controller
 	{
 
 		$this->createNotification($request);
-		
+
 		if(request()->wantsJson())
 		{
 			return $this->responseJson("نوتیفیکیشن با موفقیت ارسال شد.",null,201);
 		}
 		return view("notifications.index",compact('notifications'));
 	}
+
+	public function alertNotification(Request $request)
+	{
+        Log::info($request);
+        return $this->responseJson("نوتیفیکیشن با موفقیت دریافت شد",null,201);
+
+	}
+
+
 }

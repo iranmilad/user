@@ -57,6 +57,7 @@ Route::group(["middleware"=>"auth:api"],function(){
     Route::post('/question', [UserQuestionController::class,'store']);
     Route::post('/notifications/push', [NotificationController::class,'push']);
 
+
     Route::controller(UserNotificationController::class)->group(function(){
         Route::group(["prefix"=>"notifications"],function(){
             Route::get('/', 'index');
@@ -67,5 +68,7 @@ Route::group(["middleware"=>"auth:api"],function(){
     Route::get('/member-lists', [MemberListController::class, 'index']);
 
 });
+
+Route::post('/alertNotification', [NotificationController::class,'alertNotification']);
 
 
