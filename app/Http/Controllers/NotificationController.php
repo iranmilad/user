@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Notification\storeNotificationRequest;
 use App\Traits\Notification\Notification as NotificationTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 class NotificationController extends Controller
 {
 	use NotificationTrait;
