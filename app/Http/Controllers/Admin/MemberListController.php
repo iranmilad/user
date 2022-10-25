@@ -61,18 +61,19 @@ class MemberListController extends Controller
 			DB::commit();
 			if(request()->wantsJson())
 			{
+                $this->sendNotification($request);    //add for send notification
 				return response()->json();
 			}
 			return redirect()->route("memberLists.index");
 		}catch(\Exception $ex){
 			DB::rollBack();
 			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات."]);
-		}		
+		}
 	}
 
 	private function createSubscribe($request , $memberList){
 		$subscribes=$request->input('subscribes');
-	
+
 		if($subscribes && is_array($subscribes)){
 			foreach($subscribes as $subscribe){
 				SubscribeAccessibility::create([
@@ -117,7 +118,7 @@ class MemberListController extends Controller
 		}catch(\Exception $ex){
 			DB::rollBack();
 			throw ValidationException::withMessages(["error"=>"خطا در ثبت اطلاعات."]);
-		}		
+		}
 	}
 
 	public function destroy($id)
@@ -175,11 +176,91 @@ class MemberListController extends Controller
 			if($lists->where('user_id',$user_id)->count()==0)
 				$memberList->users()->create(['user_id'=>$user_id]);
 		}
-	
+
 		if(request()->wantsJson())
 		{
 			return response()->json();
 		}
 		return redirect()->route("memberLists.show",$id);
 	}
+
+
+    private function sendNotification(Request $request){
+
+        if (!substr($request->input('title'), 0, 1)=="S") return;
+        $symbol=substr($request->input('title'), 1);
+        $levelName=$request->input('description');
+
+
+        $username= env("ALERT_SYSTEM_USER") ?: "1";
+        $password= env("ALERT_SYSTEM_PASS") ?: "1";
+        $url= env("ALERT_SYSTEM_URL") ?: "https://alert.tseshow.com/api/config" ;
+
+
+		$level= $this->getLevel($levelName,$symbol);
+
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic '. base64_encode($username.":".$password)
+        ),
+        CURLOPT_POSTFIELDS =>'{
+            "user":1,
+            "stock":'.$symbol.',
+            "ex_change":"tsetmc",
+            "type":'.$level['type']=='resistent' ? "down-to-up" : "up-to-down".',
+            "price":'.$level['price'].',
+            "price_type":"daily",
+            "start_time":"09:00",
+            "end_time":"12:30",
+            "max_notification_count":1,
+            "sended_notification_count":0,
+            "active":true
+        }',
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+    }
+
+    private function getLevel($level,$isinc){
+
+        $url= env("ALERT_FEEDER_URL")."/api/technicalLevel/".$isinc ?: "https://feeder.tseshow.com/api/technicalLevel/".$isinc ;
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => $url,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET'
+        ));
+
+        $response = curl_exec($curl);
+        $decoded_json = json_decode($response);
+
+        curl_close($curl);
+		foreach($decoded_json as $row){
+			if ($row['level']==$level) {
+				return $row;
+			}
+		}
+
+    }
+
+
+
 }
