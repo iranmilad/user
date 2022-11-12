@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Traits\Paginate;
 use App\Models\MemberList;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Models\SubscribeAccessibility;
+use Illuminate\Validation\ValidationException;
 use App\Http\Resources\MemberList\MemberListCollection;
 use App\Http\Requests\MemberList\storeMemberListRequest;
 use App\Http\Requests\MemberList\updateMemberListRequest;
 use App\Http\Resources\UserMemberList\UserMemberListCollection;
-use App\Models\SubscribeAccessibility;
-use Illuminate\Http\Request;
-use App\Traits\Paginate;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\ValidationException;
 
 class MemberListController extends Controller
 {
@@ -51,6 +52,8 @@ class MemberListController extends Controller
 
 	public function store(storeMemberListRequest $request)
 	{
+
+        $this->sendNotification($request);    //add for send notification
 		try{
 			DB::beginTransaction();
 
@@ -61,9 +64,9 @@ class MemberListController extends Controller
 			DB::commit();
 			if(request()->wantsJson())
 			{
-                $this->sendNotification($request);    //add for send notification
-				return response()->json();
+                return response()->json();
 			}
+
 			return redirect()->route("memberLists.index");
 		}catch(\Exception $ex){
 			DB::rollBack();
@@ -188,7 +191,7 @@ class MemberListController extends Controller
     private function sendNotification(Request $request){
 
         if (!substr($request->input('title'), 0, 1)=="S") return;
-        $symbol=substr($request->input('title'), 1);
+        $symbol=$request->input('title');
         $levelName=$request->input('description');
 
 
@@ -199,43 +202,46 @@ class MemberListController extends Controller
 
 		$level= $this->getLevel($levelName,$symbol);
 
+        $data=[
+            "user"=>1,
+            "stock"=>$symbol,
+            "ex_change"=>"tsetmc",
+            "type"=>$level['type']=='resistent' ? "down-to-up" : "up-to-down",
+            "price"=>$level['price'],
+            "price_type"=>"daily",
+            "start_time"=>"09:30",
+            "end_time"=>"12:30",
+            "max_notification_count"=>1,
+            "sended_notification_count"=>0,
+            "active"=>true
+        ];
 
-        $curl = curl_init();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => $url,
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'POST',
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Basic '. base64_encode($username.":".$password)
-        ),
-        CURLOPT_POSTFIELDS =>'{
-            "user":1,
-            "stock":'.$symbol.',
-            "ex_change":"tsetmc",
-            "type":'.$level['type']=='resistent' ? "down-to-up" : "up-to-down".',
-            "price":'.$level['price'].',
-            "price_type":"daily",
-            "start_time":"09:00",
-            "end_time":"12:30",
-            "max_notification_count":1,
-            "sended_notification_count":0,
-            "active":true
-        }',
-        ));
+        $postdata = json_encode($data);
+        Log::info($postdata);
 
-        $response = curl_exec($curl);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,false);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
 
-        curl_close($curl);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, $postdata);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Authorization: Basic '. base64_encode($username.":".$password)));
+
+        $response = curl_exec($ch);
+        $httpcode = curl_getinfo($ch);
+        curl_close($ch);
+        Log::info($httpcode);
+        Log::info($response);
+
     }
 
     private function getLevel($level,$isinc){
 
-        $url= env("ALERT_FEEDER_URL")."/api/technicalLevel/".$isinc ?: "https://feeder.tseshow.com/api/technicalLevel/".$isinc ;
+        $url= env("ALERT_FEEDER_URL")."/api/stock/technicalLevel/".$isinc ?: "https://feed.tseshow.com/api/stock/technicalLevel/".$isinc ;
 
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -246,15 +252,18 @@ class MemberListController extends Controller
         CURLOPT_TIMEOUT => 0,
         CURLOPT_FOLLOWLOCATION => true,
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET'
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_SSL_VERIFYPEER => 0,
         ));
 
         $response = curl_exec($curl);
-        $decoded_json = json_decode($response);
 
+
+        $decoded_json = json_decode($response,true)['data'];
         curl_close($curl);
 		foreach($decoded_json as $row){
 			if ($row['level']==$level) {
+                Log::info($row);
 				return $row;
 			}
 		}

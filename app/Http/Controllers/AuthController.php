@@ -52,14 +52,14 @@ class AuthController extends Controller
     {
         $mobile=$request->input("mobile");
         $user=User::query()->where('mobile',$mobile)->first(['id','password','active']);
-        
+
         if(!$user){
             return  $this->responseJson("کاربری با این شماره ثبت نام نشده است.",null,404,"error");
          }
          if(!$user->active){
              return  $this->responseJson("حساب کاربری شما غیر فعال شده است.",null,403,"error");
           }
- 
+
         $password = random_int(100000, 999999);
 
         SendSmsJob::dispatch($mobile, "رمز عبور جدید شما : $password");

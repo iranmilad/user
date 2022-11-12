@@ -18,10 +18,14 @@ class UserController extends Controller
 		$vCode=$this->createVerificationCode($request);
 
 		 if($request->wantsJson()){
-			 return $this->responseJson("کد تاید به شماره همراه شما پیامک شده است.",[
-				 "gu_id"=>$vCode->gu_id,
-				 "code"=>$vCode->code,
-				],201);
+			//  return $this->responseJson("کد تاید به شماره همراه شما پیامک شده است.",[
+			// 	 "gu_id"=>$vCode->gu_id,
+			// 	 "code"=>$vCode->code,
+			// 	],201);
+            return $this->responseJson(" لطفا کد ".$vCode->code."را در کادر زیر وارد کنید ",[
+                "gu_id"=>$vCode->gu_id,
+                "code"=>$vCode->code,
+            ],201);
 		 }
 	}
 
