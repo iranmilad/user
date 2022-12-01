@@ -201,7 +201,7 @@ class MemberListController extends Controller
 
 
 		$level= $this->getLevel($levelName,$symbol);
-
+        if(!$level) return;
         $data=[
             "user"=>1,
             "stock"=>$symbol,
