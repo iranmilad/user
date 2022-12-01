@@ -258,15 +258,21 @@ class MemberListController extends Controller
 
         $response = curl_exec($curl);
 
+        if(json_decode($response,true)['data']){
+            $decoded_json = json_decode($response,true)['data'];
+            curl_close($curl);
+            foreach($decoded_json as $row){
+                if ($row['level']==$level) {
+                    Log::info($row);
+                    return $row;
+                }
+            }
+        }
+        else{
+            log::alert("Alert System Error");
+            Log::warning($response);
+        }
 
-        $decoded_json = json_decode($response,true)['data'];
-        curl_close($curl);
-		foreach($decoded_json as $row){
-			if ($row['level']==$level) {
-                Log::info($row);
-				return $row;
-			}
-		}
 
     }
 
