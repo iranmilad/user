@@ -258,7 +258,7 @@ class MemberListController extends Controller
 
         $response = curl_exec($curl);
 
-        if(json_decode($response,true)['data']){
+        if(isset($response) and isset(json_decode($response,true)['data'])){
             $decoded_json = json_decode($response,true)['data'];
             curl_close($curl);
             foreach($decoded_json as $row){
