@@ -56,10 +56,15 @@ class UserMemberListController extends Controller
 
 		$userMemberList=UserMemberList::query()->where([['user_id',auth()->id()],['member_list_id',$memberListId]])->first();
 		if($userMemberList){
-            UserMemberList::query()->delete([
+            // UserMemberList::query()->delete([
+            //     "member_list_id"=>$memberListId,
+            //     "user_id"=>auth()->id(),
+            // ]);
+            UserMemberList::where([
                 "member_list_id"=>$memberListId,
                 "user_id"=>auth()->id(),
-            ]);
+            ])
+            ->delete();
         }
         else{
             throw ValidationException::withMessages(["error"=>"شما در این ممبر لیست عضو نیستید."]);
