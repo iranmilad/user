@@ -25,17 +25,14 @@ class HomeController extends Controller
             ["title"=>"2 تایتل پیام عمومی","body"=>"2 متن پیام عمومی","link"=>"https://news.tseshow.com"],
         ];
         $data->subscribes=[
-            "اشتراک 30 روزه 70 هزار تومان",
-            "اشتراک 60 روزه 140 هزار تومان",
-            "اشتراک 90 روزه 210 هزار تومان",
-            "اشتراک 365 روزه 800 هزار تومان",
+            "اشتراک برای عموم رایگان می باشد "
         ];
 
         $data->plans=[
-            ["title"=>"اشتراک یک ماهه","price"=>"30000","price_monthly"=>"30000","price_discount"=>"","time"=>"30","payment_link"=>"https://payment.tseshow.com/123"],
-            ["title"=>"اشتراک سه ماهه","price"=>"90000","price_monthly"=>"30000","price_discount"=>"80000","time"=>"90","payment_link"=>"https://payment.tseshow.com/123"],
-            ["title"=>"اشتراک شش ماهه","price"=>"180000","price_monthly"=>"30000","price_discount"=>"150000","time"=>"180","payment_link"=>"https://payment.tseshow.com/123"],
-            ["title"=>"اشتراک یک ساله","price"=>"360000","price_monthly"=>"30000","price_discount"=>"300000","time"=>"365","payment_link"=>"https://payment.tseshow.com/123"],
+           ["title"=>"اشتراک برای عموم رایگان می باشد ","price"=>"0","price_monthly"=>"30000","price_discount"=>"","time"=>"30","payment_link"=>"https://payment.tseshow.com/123"],
+       //     ["title"=>"اشتراک سه ماهه","price"=>"0","price_monthly"=>"30000","price_discount"=>"80000","time"=>"90","payment_link"=>"https://payment.tseshow.com/123"],
+         //   ["title"=>"اشتراک شش ماهه","price"=>"180000","price_monthly"=>"30000","price_discount"=>"150000","time"=>"180","payment_link"=>"https://payment.tseshow.com/123"],
+           // ["title"=>"اشتراک یک ساله","price"=>"360000","price_monthly"=>"30000","price_discount"=>"300000","time"=>"365","payment_link"=>"https://payment.tseshow.com/123"],
         ];
 
 		$data->profile=auth()->check() ? new UserResource(auth()->user()) : null;
