@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/home/data', [HomeController::class,'index']);
-Route::get('/checkFeederAlive', [HomeController::class,'checkFeederAlive']);
+
 
 Route::controller(AuthController::class)->group(function(){
     Route::group(["prefix"=>"auth"],function(){
