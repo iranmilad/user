@@ -53,7 +53,7 @@ class HomeController extends Controller
         $response_code = get_headers($address)[0];
 
         // Check if the response code is not 200
-        if ($response_code != "HTTP/1.1 200 OK") {
+        if ($response_code == "HTTP/1.1 200 OK") {
             // Send the error message to the bot
             $bot_url = "https://api.telegram.org/bot" . $bot_token;
             $chat_id = "893419133";
