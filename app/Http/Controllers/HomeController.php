@@ -42,4 +42,26 @@ class HomeController extends Controller
 			return response()->json($data);
 		// }
 	}
+
+
+    public function checkFeederAlive(){
+        // Set the address and the bot token
+        $address = "https://feed.tseshow.com/api/summaryTrans";
+        $bot_token = "1698465436:AAGrWpCPxpznb8EtMosD19sVaRQVCWkA5bg";
+
+        // Send a GET request to the address and get the response code
+        $response_code = get_headers($address)[0];
+
+        // Check if the response code is not 200
+        if ($response_code != "HTTP/1.1 200 OK") {
+            // Send the error message to the bot
+            $bot_url = "https://api.telegram.org/bot" . $bot_token;
+            $chat_id = "893419133";
+            $text = urlencode("Error: " . $response_code);
+            file_get_contents($bot_url . "/sendMessage?chat_id=" . $chat_id . "&text=" . $text);
+        }
+    }
+
 }
+
+
