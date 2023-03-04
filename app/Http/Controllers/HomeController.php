@@ -23,6 +23,7 @@ class HomeController extends Controller
         $data->public_message=[
             ["title"=>"تایتل پیام عمومی","body"=>"متن پیام عمومی","link"=>"https://news.tseshow.com"],
             ["title"=>"2 تایتل پیام عمومی","body"=>"2 متن پیام عمومی","link"=>"https://news.tseshow.com"],
+
         ];
         $data->subscribes=[
             "اشتراک برای عموم رایگان می باشد "
