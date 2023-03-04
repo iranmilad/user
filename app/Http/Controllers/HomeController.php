@@ -57,7 +57,8 @@ class HomeController extends Controller
             // Send the error message to the bot
             $bot_url = "https://api.telegram.org/bot" . $bot_token;
             $chat_id = "893419133";
-            $text = urlencode("Error: " . $response_code);
+            $text = urlencode("Error: Feeder is not alive");
+
             file_get_contents($bot_url . "/sendMessage?chat_id=" . $chat_id . "&text=" . $text);
         }
     }
